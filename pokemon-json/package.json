@@ -1,0 +1,13 @@
+{
+  "name": "pokemon-json",
+  "version": "1.0.0",
+  "description": "Fetch pokemons from PokeAPI and save to pokemons.json",
+  "type": "module",
+  "main": "script.js",
+  "scripts": {
+    "start": "node script.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

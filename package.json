@@ -1,0 +1,20 @@
+{
+  "name": "pokemon-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pokemon project — serverless Vite frontend backed by a static pokemons.json",
+  "workspaces": [
+    "pokemon-api",
+    "pokemon-json"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace pokemon-api",
+    "build": "npm run build --workspace pokemon-api",
+    "preview": "npm run preview --workspace pokemon-api",
+    "fetch": "npm run start --workspace pokemon-json",
+    "deploy": "wrangler pages deploy pokemon-api/dist --project-name=pokemon-app"
+  },
+  "devDependencies": {
+    "wrangler": "^4.87.0"
+  }
+}
