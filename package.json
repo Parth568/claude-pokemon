@@ -14,7 +14,7 @@
     "preview": "npm run build && wrangler pages dev pokemon-api/dist --port 8788",
     "fetch": "npm run start --workspace pokemon-json",
     "migrate": "npm run migrate --workspace pokemon-mongo",
-    "deploy": "npm run build && wrangler pages deploy pokemon-api/dist --project-name=pokemon-app-2ur"
+    "deploy": "npm run build && wrangler pages deploy pokemon-api/dist --project-name=pokemon-app"
   },
   "devDependencies": {
     "wrangler": "^4.87.0"
