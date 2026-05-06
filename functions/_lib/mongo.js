@@ -1,12 +1,13 @@
 import { MongoClient } from "mongodb";
 
 export async function withDb(env, fn) {
-  if (!env.DB_CONNECTION_STRING) {
+  const uri = (env.DB_CONNECTION_STRING || "").trim();
+  if (!uri) {
     throw new Error("DB_CONNECTION_STRING is not set");
   }
 
-  const dbName = env.DB_NAME || "chaudhar007DB";
-  const client = new MongoClient(env.DB_CONNECTION_STRING, {
+  const dbName = (env.DB_NAME || "chaudhar007DB").trim();
+  const client = new MongoClient(uri, {
     serverSelectionTimeoutMS: 8000,
   });
 
