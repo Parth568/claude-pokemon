@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -m 60 http://127.0.0.1:8788/api/pokemons)",
+      "Bash(curl -s -m 15 \"http://127.0.0.1:8788/api/pokemons?q=pikachu\")"
+    ]
+  }
+}

@@ -2,19 +2,24 @@
   "name": "pokemon-app",
   "version": "1.0.0",
   "private": true,
-  "description": "Pokemon project — serverless Vite frontend backed by a static pokemons.json",
+  "description": "Pokemon project — REST API on Cloudflare Pages Functions backed by MongoDB Atlas",
   "workspaces": [
     "pokemon-api",
-    "pokemon-json"
+    "pokemon-json",
+    "pokemon-mongo"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace pokemon-api",
+    "dev": "wrangler pages dev pokemon-api --port 8788 --live-reload",
     "build": "npm run build --workspace pokemon-api",
-    "preview": "npm run preview --workspace pokemon-api",
+    "preview": "npm run build && wrangler pages dev pokemon-api/dist --port 8788",
     "fetch": "npm run start --workspace pokemon-json",
-    "deploy": "wrangler pages deploy pokemon-api/dist --project-name=pokemon-app"
+    "migrate": "npm run migrate --workspace pokemon-mongo",
+    "deploy": "npm run build && wrangler pages deploy pokemon-api/dist --project-name=pokemon-app"
   },
   "devDependencies": {
     "wrangler": "^4.87.0"
+  },
+  "dependencies": {
+    "mongodb": "^6.10.0"
   }
 }

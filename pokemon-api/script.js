@@ -1,15 +1,18 @@
-let input = document.getElementById("input-box");
-let button = document.getElementById("submit-button");
-let showContainer = document.getElementById("show-container");
-let listContainer = document.querySelector(".list");
+const input = document.getElementById("input-box");
+const button = document.getElementById("submit-button");
+const showContainer = document.getElementById("show-container");
+const listContainer = document.querySelector(".list");
 
 let pokemons = [];
-const pokemonsReady = fetch("/pokemons.json")
-  .then((r) => r.json())
+const pokemonsReady = fetch("/api/pokemons")
+  .then((r) => {
+    if (!r.ok) throw new Error(`API ${r.status}`);
+    return r.json();
+  })
   .then((data) => {
     pokemons = data;
   })
-  .catch((err) => console.error("Failed to load pokemons.json:", err));
+  .catch((err) => console.error("Failed to load /api/pokemons:", err));
 
 function displayWords(value) {
   input.value = value;
@@ -35,7 +38,7 @@ input.addEventListener("keyup", () => {
       div.classList.add("autocomplete-items");
       div.addEventListener("click", () => {
         displayWords(name);
-        getRsult();
+        getResult();
       });
       let word = "<b>" + name.substr(0, q.length) + "</b>";
       word += name.substr(q.length);
@@ -44,7 +47,7 @@ input.addEventListener("keyup", () => {
     });
 });
 
-const getRsult = async () => {
+const getResult = async () => {
   if (input.value.trim().length < 1) {
     alert("Input cannot be blank");
     return;
@@ -52,15 +55,19 @@ const getRsult = async () => {
   removeElements();
   showContainer.innerHTML = "";
 
-  await pokemonsReady;
-
   const query = input.value.trim().toLowerCase();
-  const pokemon = pokemons.find((p) => p.name.toLowerCase() === query);
+  const res = await fetch(`/api/pokemons/${encodeURIComponent(query)}`);
 
-  if (!pokemon) {
+  if (res.status === 404) {
     showContainer.innerHTML = `<p class="not-found">Pokemon "${input.value}" not found. Try another name!</p>`;
     return;
   }
+  if (!res.ok) {
+    showContainer.innerHTML = `<p class="not-found">API error (${res.status}). Try again.</p>`;
+    return;
+  }
+
+  const pokemon = await res.json();
 
   const typeBadges = pokemon.types
     .map((t) => `<span class="type-badge type-${t}">${t}</span>`)
@@ -106,12 +113,13 @@ const getRsult = async () => {
     </div>`;
 };
 
-button.addEventListener("click", getRsult);
+button.addEventListener("click", getResult);
 
 input.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") getRsult();
+  if (e.key === "Enter") getResult();
 });
 
-window.onload = () => {
-  getRsult();
-};
+window.addEventListener("load", async () => {
+  await pokemonsReady;
+  getResult();
+});

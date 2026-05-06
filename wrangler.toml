@@ -1,0 +1,4 @@
+name = "pokemon-app"
+pages_build_output_dir = "pokemon-api/dist"
+compatibility_date = "2025-09-01"
+compatibility_flags = ["nodejs_compat"]
